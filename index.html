@@ -6,46 +6,55 @@
 
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            text-align: center;
             margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;   /* horizontal center */
+            align-items: center;       /* vertical center */
+            background: linear-gradient(135deg, #4e73df, #1cc88a);
+            font-family: Arial, sans-serif;
         }
 
-        nav {
-            background-color: #2c3e50;
-            padding: 15px;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 20px;
-            font-size: 18px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: #1abc9c;
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
         h1 {
-            margin-top: 40px;
-            color: #2c3e50;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        a {
+            display: block;
+            margin: 15px 0;
+            padding: 12px 25px;
+            text-decoration: none;
+            background-color: #4e73df;
+            color: white;
+            font-size: 18px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            background-color: #2e59d9;
+            transform: scale(1.05);
         }
     </style>
 </head>
 
 <body>
 
-    <nav>
+    <div class="container">
+        <h1>Hamad Alqriqri</h1>
         <a href="lab2/index.html">Lab 2</a>
         <a href="lab3/index.html">Lab 3</a>
         <a href="lab4/index.html">Lab 4</a>
-    </nav>
-
-    <h1>Hamad Alqriqri</h1>
+    </div>
 
 </body>
 </html>
