@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playground Project</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+.vote-container { margin-bottom: 30px; }
+
+button { 
+    font-size: 2rem; padding: 10px 20px; cursor: pointer; 
+    border: 1px solid #ccc; background: #f0f0f0; border-radius: 5px; margin: 5px;
+}
+
+textarea { 
+    width: 400px; height: 150px; padding: 10px; 
+    border: 1px solid #ccc; border-radius: 4px; display: block; margin: 10px auto;
+}
+
+.btn-group button { font-size: 1rem; color: white; border: none; padding: 10px 20px; }
+#submitBtn { background-color: #555; }
+#resetBtn { background-color: #666; }
+
+#commentDisplay { margin-top: 20px; font-style: italic; color: #333; }
+    </style>
+</head>
+<body>
+    
+    <h1>Lab 6</h1>
+    <h2>Like or dislike</h2>
+
+    <div class="vote-container">
+        <button id="likeBtn" onclick="handleVote('like')">👍 <span id="likeCount">0</span></button>
+        <button id="dislikeBtn" onclick="handleVote('dislike')">👎 <span id="dislikeCount">0</span></button>
+    </div>
+
+    <div class="comment-section">
+        <h3>Comments</h3>
+        <textarea id="commentInput" placeholder="Write a comment..."></textarea>
+        <div class="btn-group">
+            <button id="submitBtn" onclick="submitComment()">Submit</button>
+            <button id="resetBtn" onclick="resetAll()">Reset</button>
+        </div>
+        <div id="commentDisplay"></div>
+    </div>
+
+    <script src="script.js"></script>
+
+
+    <script>
+        // On page load, retrieve data from cookies
+window.onload = function() {
+    updateUI();
+};
+
+function setCookie(name, value) {
+    document.cookie = `${name}=${value}; path=/; max-age=31536000`; // Expire in 1 year
+}
+
+function getCookie(name) {
+    let match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? match[2] : null;
+}
+
+function handleVote(type) {
+    if (getCookie("voted")) {
+        alert("You have already voted!");
+        return;
+    }
+
+    let currentCount = parseInt(getCookie(type) || 0);
+    setCookie(type, currentCount + 1);
+    setCookie("voted", "true");
+    updateUI();
+}
+
+function submitComment() {
+    if (getCookie("commented")) {
+        alert("You can only leave one comment!");
+        return;
+    }
+
+    let text = document.getElementById("commentInput").value;
+    if (text.trim() === "") return;
+
+    setCookie("userComment", encodeURIComponent(text));
+    setCookie("commented", "true");
+    document.getElementById("commentInput").value = "";
+    updateUI();
+}
+
+function updateUI() {
+    document.getElementById("likeCount").innerText = getCookie("like") || 0;
+    document.getElementById("dislikeCount").innerText = getCookie("dislike") || 0;
+
+    let savedComment = getCookie("userComment");
+    const display = document.getElementById("commentDisplay");
+    
+    if (savedComment) {
+        display.innerText = decodeURIComponent(savedComment);
+    } else {
+        display.innerText = "";
+    }
+}
+
+function resetAll() {
+    // Clear all cookies by setting expiry to past
+    const cookies = ["like", "dislike", "voted", "commented", "userComment"];
+    cookies.forEach(c => {
+        document.cookie = `${c}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    });
+    
+    alert("Data cleared. You can vote and comment again.");
+    updateUI();
+}
+    </script>
+</body>
+</html>
