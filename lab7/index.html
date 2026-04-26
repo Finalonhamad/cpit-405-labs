@@ -115,7 +115,7 @@
 
 <script>
   // ── PUT YOUR ACCESS KEY HERE ──────────────────────────────
-  const ACCESS_KEY = 'nR1SKBEmkT0BkSeqqc9drcPazokpLyOehYTV_e_faLA';
+  const ACCESS_KEY = 'YOUR_ACCESS_KEY_HERE';
   // ─────────────────────────────────────────────────────────
 
   const PER_PAGE = 8;
@@ -132,6 +132,14 @@
     const el = document.getElementById('status');
     el.textContent = msg;
     el.className = isError ? 'error' : '';
+  }
+
+  function validate() {
+    if (!ACCESS_KEY || ACCESS_KEY === 'nR1SKBEmkT0BkSeqqc9drcPazokpLyOehYTV_e_faLA') {
+      setStatus('⚠ Please add your Unsplash Access Key in the code (ACCESS_KEY variable).', true);
+      return false;
+    }
+    return true;
   }
 
   function renderImages(photos) {
@@ -160,6 +168,7 @@
 
   // ── 1. XMLHttpRequest ─────────────────────────────────────
   function searchXHR() {
+    if (!validate()) return;
     setStatus('Searching…');
     document.getElementById('gallery').innerHTML = '';
 
@@ -183,6 +192,7 @@
 
   // ── 2. Fetch with Promises ────────────────────────────────
   function searchPromise() {
+    if (!validate()) return;
     setStatus('Searching…');
     document.getElementById('gallery').innerHTML = '';
 
@@ -202,6 +212,7 @@
 
   // ── 3. Fetch with Async/Await ─────────────────────────────
   async function searchAsync() {
+    if (!validate()) return;
     setStatus('Searching…');
     document.getElementById('gallery').innerHTML = '';
 
