@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Country Explorer — Hamad Alqriqri</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .app-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .app-about {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      position: sticky;
+      top: 80px;
+    }
+
+    .app-about h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .app-about p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+      line-height: 1.6;
+    }
+
+    .app-about .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1rem 0;
+    }
+
+    .app-about .link-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .app-about .link-list a {
+      font-size: 0.82rem;
+      color: var(--accent);
+      padding: 0.3rem 0.5rem;
+      border-radius: var(--radius-sm);
+      transition: background 0.2s;
+    }
+
+    .app-about .link-list a:hover {
+      background: var(--accent-light);
+    }
+
+    /* Explorer main */
+    .explorer-main {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .search-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .search-row input {
+      flex: 1;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.7rem 0.9rem;
+      color: var(--text-primary);
+      font-size: 0.88rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-row input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+    }
+
+    .search-row input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .status-line {
+      margin-top: 0.75rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      min-height: 20px;
+    }
+
+    .status-line.loading { color: var(--accent); }
+    .status-line.error { color: #ef4444; }
+    .status-line.found { color: var(--success); }
+
+    /* Countries grid */
+    .countries-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .country-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .country-card:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(108,99,255,0.12);
+    }
+
+    .country-flag {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+      background: var(--bg-primary);
+    }
+
+    .country-info {
+      padding: 1rem;
+    }
+
+    .country-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .country-detail {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .country-detail .icon {
+      font-size: 0.85rem;
+    }
+
+    .empty-state {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .empty-state .emoji {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Spinner */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--accent-border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 0.4rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .app-layout { grid-template-columns: 1fr; }
+      .app-about { display: none; }
+      .countries-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- HEADER -->
+    <header>
+      <div class="header-brand">
+        <span class="name">Hamad Alqriqri</span>
+        <span class="title">IT Student · KAU</span>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="cv.html">CV</a>
+        <a href="labs.html">Labs</a>
+        <a href="myworks.html" class="active">My Works</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside>
+      <div class="profile-card">
+        <div class="avatar">HA</div>
+        <h2>Hamad Alqriqri</h2>
+        <p class="role">IT Student — CPIT-405</p>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>Navigation</h3>
+        <a href="index.html" class="sidebar-nav-link">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Home
+        </a>
+        <a href="cv.html" class="sidebar-nav-link">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          CV
+        </a>
+        <a href="labs.html" class="sidebar-nav-link">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+          Labs &amp; Projects
+        </a>
+        <a href="myworks.html" class="sidebar-nav-link active">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          My Works
+        </a>
+        <a href="contact.html" class="sidebar-nav-link">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Contact
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>About This App</h3>
+        <div class="info-list">
+          <div class="info-item">
+            <span class="label">Type</span>
+            <span class="value">JavaScript + API</span>
+          </div>
+          <div class="info-item">
+            <span class="label">API Source</span>
+            <span class="value">restcountries.com</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>Portfolio Links</h3>
+        <div class="info-list">
+          <div class="info-item"><a href="myworks.html">← My Works</a></div>
+          <div class="info-item"><a href="app1.html">View App 1</a></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main>
+      <h2 class="section-heading">Country Explorer</h2>
+      <div class="section-divider"></div>
+
+      <div class="app-layout">
+
+        <!-- About panel -->
+        <div class="app-about">
+          <h3>🌍 About This App</h3>
+          <p>Search and explore countries from around the world using the REST Countries public API.</p>
+          <p>Data is fetched live from <strong style="color:var(--text-secondary)">restcountries.com</strong>. Displays flag, capital, region, and population for each result.</p>
+          <div class="divider"></div>
+          <p style="font-size:0.75rem; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.5rem;">Portfolio Links</p>
+          <div class="link-list">
+            <a href="myworks.html">← My Works</a>
+            <a href="app1.html">View App 1</a>
+          </div>
+        </div>
+
+        <!-- Explorer -->
+        <div class="explorer-main">
+
+          <div class="search-card">
+            <div class="search-row">
+              <input type="text" id="search-input" placeholder="Search for a country (e.g. saudi, france, japan)..." />
+              <button class="btn" onclick="searchCountries()">Search</button>
+            </div>
+            <div class="status-line" id="status-line">Type a country name and press Search.</div>
+          </div>
+
+          <div class="countries-grid" id="countries-grid">
+            <div class="empty-state">
+              <div class="emoji">🌍</div>
+              <p>Search for a country above to explore it.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      &copy; 2026 <span>Hamad Alqriqri</span> — CPIT-405 Portfolio · King Abdulaziz University
+    </footer>
+
+  </div>
+
+  <script>
+    const input = document.getElementById('search-input');
+    const grid = document.getElementById('countries-grid');
+    const status = document.getElementById('status-line');
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') searchCountries();
+    });
+
+    async function searchCountries() {
+      const query = input.value.trim();
+      if (!query) {
+        setStatus('Please enter a country name.', '');
+        return;
+      }
+
+      setStatus('<span class="spinner"></span> Searching...', 'loading');
+      grid.innerHTML = '';
+
+      try {
+        const res = await fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(query)}`);
+        if (res.status === 404) {
+          setStatus('No countries found. Try a different name.', 'error');
+          grid.innerHTML = `<div class="empty-state"><div class="emoji">🔍</div><p>No countries found. Try a different name.</p></div>`;
+          return;
+        }
+        if (!res.ok) throw new Error('API error');
+
+        const data = await res.json();
+        setStatus(`${data.length} result${data.length !== 1 ? 's' : ''} found`, 'found');
+        renderCountries(data);
+      } catch (err) {
+        setStatus('Failed to fetch data. Please try again.', 'error');
+        grid.innerHTML = `<div class="empty-state"><div class="emoji">⚠️</div><p>Something went wrong. Please try again.</p></div>`;
+      }
+    }
+
+    function renderCountries(countries) {
+      grid.innerHTML = '';
+      countries.forEach(c => {
+        const name = c.name?.common || 'Unknown';
+        const flag = c.flags?.png || c.flags?.svg || '';
+        const capital = c.capital?.[0] || 'N/A';
+        const region = c.region || 'N/A';
+        const pop = c.population ? c.population.toLocaleString() : 'N/A';
+        const lang = c.languages ? Object.values(c.languages)[0] : 'N/A';
+
+        const card = document.createElement('div');
+        card.className = 'country-card';
+        card.innerHTML = `
+          <img class="country-flag" src="${flag}" alt="Flag of ${name}" loading="lazy" />
+          <div class="country-info">
+            <div class="country-name">${name}</div>
+            <div class="country-detail"><span class="icon">🏛️</span>${capital}</div>
+            <div class="country-detail"><span class="icon">🌐</span>${region}</div>
+            <div class="country-detail"><span class="icon">👥</span>${pop}</div>
+            <div class="country-detail"><span class="icon">🗣️</span>${lang}</div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function setStatus(msg, cls) {
+      status.innerHTML = msg;
+      status.className = 'status-line' + (cls ? ' ' + cls : '');
+    }
+  </script>
+</body>
+</html>

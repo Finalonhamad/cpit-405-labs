@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Works — Hamad Alqriqri</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .works-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .work-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: all 0.2s;
+    }
+
+    .work-card:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(108,99,255,0.1);
+    }
+
+    .work-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .work-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      background: var(--accent-light);
+      border: 1px solid var(--accent-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .work-badges {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .work-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.3rem;
+    }
+
+    .work-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .work-features {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .work-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .work-feature::before {
+      content: '•';
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .work-footer {
+      margin-top: auto;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 768px) {
+      .works-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- HEADER -->
+    <header>
+      <div class="header-brand">
+        <span class="name">Hamad Alqriqri</span>
+        <span class="title">IT Student · KAU</span>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="cv.html">CV</a>
+        <a href="labs.html">Labs</a>
+        <a href="myworks.html" class="active">My Works</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside>
+      <div class="profile-card">
+        <div class="avatar">HA</div>
+        <h2>Hamad Alqriqri</h2>
+        <p class="role">IT Student — CPIT-405</p>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>Navigation</h3>
+        <a href="index.html" class="sidebar-nav-link">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Home
+        </a>
+        <a href="cv.html" class="sidebar-nav-link">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          CV
+        </a>
+        <a href="labs.html" class="sidebar-nav-link">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+          Labs &amp; Projects
+        </a>
+        <a href="myworks.html" class="sidebar-nav-link active">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          My Works
+        </a>
+        <a href="contact.html" class="sidebar-nav-link">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Contact
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>Quick Links</h3>
+        <div class="info-list">
+          <div class="info-item"><a href="cv.html">View CV Page</a></div>
+          <div class="info-item"><a href="labs.html">View Labs</a></div>
+          <div class="info-item"><a href="contact.html">Open Contact Page</a></div>
+          <div class="info-item"><a href="https://github.com/Finalonhamad" target="_blank">GitHub Profile</a></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main>
+      <h2 class="section-heading">My Works</h2>
+      <div class="section-divider"></div>
+
+      <div class="works-grid">
+
+        <!-- App 1 -->
+        <div class="work-card">
+          <div class="work-card-header">
+            <div class="work-icon">🧠</div>
+            <div class="work-badges">
+              <span class="badge badge-purple">JavaScript</span>
+            </div>
+          </div>
+          <div>
+            <div class="work-title">Tech Quiz App</div>
+            <p class="work-desc">An interactive 10-question quiz covering HTML, CSS, JavaScript, and web fundamentals. Built entirely with vanilla JavaScript — no external APIs used. Tests your web tech knowledge with instant feedback.</p>
+          </div>
+          <div class="work-features">
+            <div class="work-feature">10 web technology questions</div>
+            <div class="work-feature">Instant right/wrong feedback</div>
+            <div class="work-feature">Score tracking and final results</div>
+            <div class="work-feature">No external APIs — fully self-contained</div>
+          </div>
+          <div class="work-footer">
+            <a href="app1.html" class="btn" style="width:100%; justify-content:center;">Open App</a>
+          </div>
+        </div>
+
+        <!-- App 2 -->
+        <div class="work-card">
+          <div class="work-card-header">
+            <div class="work-icon">🌍</div>
+            <div class="work-badges">
+              <span class="badge badge-purple">JavaScript</span>
+              <span class="badge badge-green">API</span>
+            </div>
+          </div>
+          <div>
+            <div class="work-title">Country Explorer</div>
+            <p class="work-desc">Search and explore countries around the world using the REST Countries public API. Displays flags, capitals, regions, populations, and languages for each result fetched live from the API.</p>
+          </div>
+          <div class="work-features">
+            <div class="work-feature">Live data from REST Countries API</div>
+            <div class="work-feature">Search by country name</div>
+            <div class="work-feature">Displays flag, capital, region, population</div>
+            <div class="work-feature">Loading and error state handling</div>
+          </div>
+          <div class="work-footer">
+            <a href="app2.html" class="btn" style="width:100%; justify-content:center;">Open App</a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      &copy; 2026 <span>Hamad Alqriqri</span> — CPIT-405 Portfolio · King Abdulaziz University
+    </footer>
+
+  </div>
+</body>
+</html>
