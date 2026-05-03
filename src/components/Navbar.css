@@ -1,0 +1,17 @@
+.navbar {
+  background: #333;
+  display: flex;
+  padding: 0 12px;
+}
+
+.navbar a {
+  color: #ccc;
+  text-decoration: none;
+  padding: 10px 14px;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.navbar a:hover {
+  color: #fff;
+}
